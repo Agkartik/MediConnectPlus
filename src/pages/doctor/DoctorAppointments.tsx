@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { getAppointments, updateAppointmentStatus } from "@/services/medicalService";
 import { useAsyncSync } from "@/hooks/useAsyncSync";
 import VideoCallModal from "@/components/VideoCallModal";
+import UserAvatar from "@/components/UserAvatar";
 
 const statusColors: Record<string, string> = {
   confirmed: "bg-primary/10 text-primary",
@@ -76,7 +77,7 @@ const DoctorAppointments = () => {
             return (
               <motion.div key={a.id} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.06 }}
                 className="flex items-center gap-4 p-4 rounded-xl bg-secondary/50 border border-border/30 hover:shadow-card transition-all">
-                <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent font-bold text-sm">{a.avatar}</div>
+                <UserAvatar avatar={a.avatar} name={a.patientName} className="w-12 h-12" />
                 <div className="flex-1">
                   <p className="font-medium text-sm">{a.patientName || t("doctorAppointments.patient")}</p>
                   <p className="text-xs text-muted-foreground">{a.specialty}</p>
@@ -109,7 +110,7 @@ const DoctorAppointments = () => {
             return (
               <motion.div key={a.id} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.06 }}
                 className="flex items-center gap-4 p-4 rounded-xl bg-secondary/50 border border-border/30">
-                <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center text-muted-foreground font-bold text-sm">{a.avatar}</div>
+                <UserAvatar avatar={a.avatar} name={a.patientName} className="w-12 h-12 opacity-50" />
                 <div className="flex-1">
                   <p className="font-medium text-sm">{a.patientName || t("doctorAppointments.patient")}</p>
                   <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">

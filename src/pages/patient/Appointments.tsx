@@ -24,6 +24,7 @@ import type { Appointment } from "@/types/store";
 import { useAsyncSync } from "@/hooks/useAsyncSync";
 import { useAuth } from "@/contexts/AuthContext";
 import VideoCallModal from "@/components/VideoCallModal";
+import UserAvatar from "@/components/UserAvatar";
 import { canPatientJoinAppointmentCall } from "@/lib/appointmentTime";
 
 const statusColors: Record<string, string> = {
@@ -83,7 +84,7 @@ const AppointmentCard = ({
 
   return (
     <motion.div layout initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, x: -100 }} className="flex items-center gap-4 p-4 rounded-xl bg-secondary/50 border border-border/30 hover:shadow-card transition-all">
-      <div className="w-12 h-12 rounded-full gradient-primary flex items-center justify-center text-primary-foreground font-bold text-sm">{apt.avatar}</div>
+      <UserAvatar avatar={apt.avatar} name={apt.doctor} className="w-12 h-12" />
       <div className="flex-1">
         <p className="font-medium text-sm">{apt.doctor}</p>
         <p className="text-xs text-muted-foreground">{apt.specialty}</p>

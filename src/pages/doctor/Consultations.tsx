@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { getActiveConsultations, getCompletedConsultations, updateConsultationStatus } from "@/services/medicalService";
 import { useAsyncSync } from "@/hooks/useAsyncSync";
 import VideoCallModal from "@/components/VideoCallModal";
+import UserAvatar from "@/components/UserAvatar";
 
 const Consultations = () => {
   const { t } = useTranslation();
@@ -80,7 +81,7 @@ const Consultations = () => {
             <motion.div key={c.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}>
               <Card className="shadow-card border-border/50 border-l-4 border-l-accent">
                 <CardContent className="p-5 flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent font-bold text-sm">{c.avatar}</div>
+                  <UserAvatar avatar={c.avatar} name={c.patient} className="w-12 h-12" />
                   <div className="flex-1">
                     <h3 className="font-heading font-semibold text-sm">{c.patient}</h3>
                     <p className="text-xs text-muted-foreground">{c.notes}</p>
@@ -108,7 +109,7 @@ const Consultations = () => {
           {completed.map((c, i) => (
             <motion.div key={c.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: i * 0.06 }}
               className="flex items-center gap-4 p-4 rounded-xl bg-secondary/50 border border-border/30">
-              <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-muted-foreground font-bold text-xs">{c.avatar}</div>
+              <UserAvatar avatar={c.avatar} name={c.patient} className="w-10 h-10 opacity-50" />
               <div className="flex-1">
                 <p className="font-medium text-sm">{c.patient}</p>
                 <p className="text-xs text-muted-foreground">{c.diagnosis}</p>

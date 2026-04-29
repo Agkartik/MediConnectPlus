@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import Patients from "./doctor/Patients";
 import DoctorAppointments from "./doctor/DoctorAppointments";
 import Consultations from "./doctor/Consultations";
+import UserAvatar from "@/components/UserAvatar";
 import DoctorPrescriptions from "./doctor/DoctorPrescriptions";
 import Earnings from "./doctor/Earnings";
 import DoctorMessages from "./doctor/DoctorMessages";
@@ -147,9 +148,7 @@ const Overview = () => {
                   transition={{ delay: i * 0.06 }}
                   className="flex items-center gap-4 p-4 rounded-xl bg-secondary/50 border border-border/30 hover:shadow-card transition-all"
                 >
-                  <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent text-xs font-bold">
-                    {s.avatar}
-                  </div>
+                  <UserAvatar avatar={s.avatar} name={s.patientName} className="w-10 h-10" />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium truncate">{s.patientName}</p>
                     <p className="text-xs text-muted-foreground">
