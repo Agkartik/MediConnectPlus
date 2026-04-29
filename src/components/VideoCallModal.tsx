@@ -8,8 +8,17 @@ import type { Socket } from "socket.io-client";
 const ICE_SERVERS: RTCConfiguration = {
   iceServers: [
     { urls: "stun:stun.l.google.com:19302" },
-    { urls: "stun:stun1.l.google.com:19302" },
-    { urls: "stun:stun.services.mozilla.com" }
+    { urls: "stun:global.stun.twilio.com:3478" },
+    {
+      urls: "turn:openrelay.metered.ca:80",
+      username: "openrelayproject",
+      credential: "openrelayproject",
+    },
+    {
+      urls: "turn:openrelay.metered.ca:443",
+      username: "openrelayproject",
+      credential: "openrelayproject",
+    },
   ],
 };
 
@@ -109,7 +118,18 @@ const VideoCallModal = ({ open, remoteName, remoteAvatar, onEnd, roomId }: Video
         }
 
         pc.ontrack = (ev) => {
-          if (remoteRef.current && ev.streams[0]) remoteRef.current.srcObject = ev.streams[0];
+          if (remoteRef.current) {
+            if (ev.streams && ev.streams.length > 0) {
+              remoteRef.current.srcObject = ev.streams[0];
+            } else {
+              let inboundStream = remoteRef.current.srcObject as MediaStream | null;
+              if (!inboundStream) {
+                inboundStream = new MediaStream();
+                remoteRef.current.srcObject = inboundStream;
+              }
+              inboundStream.addTrack(ev.track);
+            }
+          }
           setStatus("live");
         };
 
