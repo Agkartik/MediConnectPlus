@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 20% 98%;
+    --foreground: 215 25% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 215 25% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 25% 12%;
+
+    --primary: 168 80% 36%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 20% 95%;
+    --secondary-foreground: 215 25% 12%;
+
+    --muted: 210 15% 93%;
+    --muted-foreground: 215 10% 50%;
+
+    --accent: 199 89% 48%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 210 15% 90%;
+    --input: 210 15% 90%;
+    --ring: 168 80% 36%;
+
+    --radius: 0.75rem;
+
+    /* Custom tokens */
+    --gradient-primary: linear-gradient(135deg, hsl(168, 80%, 36%), hsl(199, 89%, 48%));
+    --gradient-hero: linear-gradient(135deg, hsl(168, 80%, 30%), hsl(199, 89%, 40%), hsl(230, 70%, 50%));
+    --gradient-warm: linear-gradient(135deg, hsl(30, 90%, 55%), hsl(350, 80%, 55%));
+    --gradient-card: linear-gradient(145deg, hsl(0, 0%, 100%), hsl(210, 20%, 97%));
+    --shadow-soft: 0 4px 20px -4px hsl(168 80% 36% / 0.15);
+    --shadow-card: 0 1px 3px hsl(215 25% 12% / 0.06), 0 4px 12px hsl(215 25% 12% / 0.04);
+    --shadow-elevated: 0 8px 30px -8px hsl(215 25% 12% / 0.12);
+
+    --sidebar-background: 215 25% 12%;
+    --sidebar-foreground: 210 20% 90%;
+    --sidebar-primary: 168 80% 36%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 215 20% 18%;
+    --sidebar-accent-foreground: 210 20% 90%;
+    --sidebar-border: 215 20% 20%;
+    --sidebar-ring: 168 80% 36%;
+
+    /* Role colors */
+    --patient: 168 80% 36%;
+    --doctor: 199 89% 48%;
+    --admin: 260 60% 55%;
+
+    --font-heading: 'Plus Jakarta Sans', system-ui, sans-serif;
+    --font-body: 'Inter', system-ui, sans-serif;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+}
+
+@layer utilities {
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+  .gradient-hero {
+    background: var(--gradient-hero);
+  }
+  .gradient-warm {
+    background: var(--gradient-warm);
+  }
+  .text-gradient {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .glass-card {
+    background: hsl(0 0% 100% / 0.8);
+    backdrop-filter: blur(12px);
+    border: 1px solid hsl(var(--border));
+  }
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+  .shadow-elevated {
+    box-shadow: var(--shadow-elevated);
+  }
+}

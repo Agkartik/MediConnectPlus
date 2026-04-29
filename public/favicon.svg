@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <defs>
+    <linearGradient id="mcg" x1="6" y1="4" x2="26" y2="28">
+      <stop offset="0%" stop-color="#14b8a6"/>
+      <stop offset="100%" stop-color="#0f766e"/>
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="9" fill="url(#mcg)"/>
+  <!-- Care + pulse: heart with heartbeat line (not a plain “+”) -->
+  <path fill="#f0fdfa" fill-opacity="0.98" d="M16 24.2c-.35 0-.68-.12-.95-.35-3.9-3.35-7.05-6.2-7.05-9.85 0-2.05 1.45-3.7 3.35-3.7 1.15 0 2.2.55 2.85 1.45.65-.9 1.7-1.45 2.85-1.45 1.9 0 3.35 1.65 3.35 3.7 0 3.65-3.15 6.5-7.05 9.85-.27.23-.6.35-.95.35z"/>
+  <path stroke="#ccfbf1" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none" d="M7 26.5h2.2l1.4-3.2 2.1 5.2 2-7 1.8 5h7.5"/>
+</svg>

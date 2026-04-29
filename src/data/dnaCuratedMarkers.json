@@ -1,0 +1,35 @@
+[
+  {
+    "rsid": "rs762551",
+    "gene": "CYP1A2",
+    "title": "Caffeine metabolism (CYP1A2)",
+    "genotypes": {
+      "AA": { "metabolismHint": "fast", "confidence": 70, "note": "Often associated with faster caffeine metabolism in many populations; not medical advice." },
+      "AC": { "metabolismHint": "normal", "confidence": 55, "note": "Intermediate caffeine metabolism (simplified model)." },
+      "CA": { "metabolismHint": "normal", "confidence": 55, "note": "Intermediate caffeine metabolism (simplified model)." },
+      "CC": { "metabolismHint": "slow", "confidence": 70, "note": "Often associated with slower caffeine clearance; limit caffeine if sensitive (discuss with a clinician)." }
+    }
+  },
+  {
+    "rsid": "rs4988235",
+    "gene": "MCM6/LCT region",
+    "title": "Lactase persistence (near LCT)",
+    "genotypes": {
+      "GG": { "traitStatus": "unlikely", "confidence": 75, "note": "Common pattern linked to continued lactase activity in many European-ancestry groups (not diagnostic)." },
+      "AG": { "traitStatus": "likely", "confidence": 60, "note": "Intermediate lactase-related pattern; individual tolerance varies." },
+      "GA": { "traitStatus": "likely", "confidence": 60, "note": "Intermediate lactase-related pattern; individual tolerance varies." },
+      "AA": { "traitStatus": "likely", "confidence": 75, "note": "Common pattern linked to reduced lactase persistence in many populations—still not a diagnosis of intolerance." }
+    }
+  },
+  {
+    "rsid": "rs1801133",
+    "gene": "MTHFR",
+    "title": "MTHFR C677T (folate metabolism, common variant)",
+    "genotypes": {
+      "AA": { "riskLevel": "moderate", "note": "Variant sometimes discussed with folate metabolism; supplements and diet should follow your clinician." },
+      "AG": { "riskLevel": "low", "note": "Heterozygous common variant; clinical significance is person-specific." },
+      "GA": { "riskLevel": "low", "note": "Heterozygous common variant; clinical significance is person-specific." },
+      "GG": { "riskLevel": "low", "note": "Common reference pattern in many datasets." }
+    }
+  }
+]
