@@ -540,6 +540,20 @@ router.post("/appointments", authRequired, requireApproved, requireRole("patient
         av = du.avatar || av;
       }
     }
+    
+    // Check for double booking
+    if (docId && date && time) {
+      const existing = await Appointment.findOne({
+        doctorId: docId,
+        date: { $regex: date, $options: "i" },
+        time,
+        status: { $in: ["confirmed", "pending"] }
+      });
+      if (existing) {
+        return res.status(400).json({ error: "This time slot is already booked for the selected doctor." });
+      }
+    }
+
     const apt = await Appointment.create({
       patientId: req.user.id,
       doctorId: docId,

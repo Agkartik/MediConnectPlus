@@ -64,23 +64,21 @@ export function parseAppointmentDateTime(dateStr, timeStr) {
 }
 
 /**
- * Patient may join a video room if: env override, within slot window, or same calendar day as appointment (Video only).
+ * Participants may join a video room if: env override is true, or strictly within slot window (start time to +60mins).
  */
-export function isPatientWithinVideoCallWindow(appointment) {
+export function isWithinVideoCallWindow(appointment) {
   if (process.env.ALLOW_VIDEO_CALL_ANYTIME === "true") return true;
   if (!appointment || !["confirmed", "pending"].includes(appointment.status)) return false;
 
-  const isVideo = appointment.type === "Video";
   const start = parseAppointmentDateTime(appointment.date, appointment.time);
   const now = Date.now();
   if (start) {
     const startMs = start.getTime();
-    const earlyWindowMs = 10 * 60 * 1000;
+    // 0 minutes early, up to 60 minutes late
+    const earlyWindowMs = 0;
     const lateWindowMs = 60 * 60 * 1000;
     if (now >= startMs - earlyWindowMs && now <= startMs + lateWindowMs) return true;
   }
-
-  if (isVideo && isAppointmentDateToday(appointment.date)) return true;
 
   return false;
 }

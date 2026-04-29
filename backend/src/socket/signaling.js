@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { User } from "../models/User.js";
 import { Appointment } from "../models/Appointment.js";
 import { Consultation } from "../models/Consultation.js";
-import { isPatientWithinVideoCallWindow } from "../utils/appointmentCallWindow.js";
+import { isWithinVideoCallWindow } from "../utils/appointmentCallWindow.js";
 
 /**
  * Socket.IO signaling for WebRTC (offer/answer/ICE). Rooms match VideoCallModal roomId (e.g. appointment-<id>).
@@ -58,8 +58,8 @@ export function attachSignaling(httpServer) {
             ack?.({ ok: false, error: "Appointment is not active" });
             return;
           }
-          if (callerRole === "patient" && !isPatientWithinVideoCallWindow(apt)) {
-            ack?.({ ok: false, error: "Patient can join only at appointment time" });
+          if (!isWithinVideoCallWindow(apt)) {
+            ack?.({ ok: false, error: "You can only join at the scheduled appointment time." });
             return;
           }
         } else if (roomId.startsWith("consultation-")) {

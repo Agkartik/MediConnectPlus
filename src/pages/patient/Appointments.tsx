@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { Calendar, Clock, Video, MapPin, MessageSquare, X, CheckCircle, Plus } from "lucide-react";
@@ -227,7 +227,30 @@ const Appointments = () => {
     }
   };
 
-  const timeSlots = ["9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM", "12:00 PM", "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM", "3:00 PM", "3:30 PM", "4:00 PM", "4:30 PM", "5:00 PM"];
+  const [availableTimeSlots, setAvailableTimeSlots] = useState<string[]>(["9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM", "12:00 PM", "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM", "3:00 PM", "3:30 PM", "4:00 PM", "4:30 PM", "5:00 PM"]);
+  const [slotsLoading, setSlotsLoading] = useState(false);
+
+  useEffect(() => {
+    if (selectedDoctor && selectedDate) {
+      setSlotsLoading(true);
+      fetch(`${import.meta.env.VITE_API_URL || ""}/api/doctors/${selectedDoctor}/available-slots?date=${selectedDate}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("mediconnect_token")}` }
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.availableSlots) {
+          setAvailableTimeSlots(data.availableSlots);
+          if (selectedTime && !data.availableSlots.includes(selectedTime)) {
+            setSelectedTime("");
+          }
+        }
+      })
+      .catch(() => console.error("Failed to fetch slots"))
+      .finally(() => setSlotsLoading(false));
+    } else {
+      setAvailableTimeSlots(["9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM", "12:00 PM", "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM", "3:00 PM", "3:30 PM", "4:00 PM", "4:30 PM", "5:00 PM"]);
+    }
+  }, [selectedDoctor, selectedDate]);
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto w-full">
@@ -340,9 +363,13 @@ const Appointments = () => {
               <Select value={selectedTime} onValueChange={setSelectedTime}>
                 <SelectTrigger><SelectValue placeholder={t("appointments.selectTime")} /></SelectTrigger>
                 <SelectContent>
-                  {timeSlots.map((slot) => (
-                    <SelectItem key={slot} value={slot}>{slot}</SelectItem>
-                  ))}
+                  {availableTimeSlots.length === 0 ? (
+                    <SelectItem value="none" disabled>No slots available for this date</SelectItem>
+                  ) : (
+                    availableTimeSlots.map((slot) => (
+                      <SelectItem key={slot} value={slot}>{slot}</SelectItem>
+                    ))
+                  )}
                 </SelectContent>
               </Select>
             </div>
