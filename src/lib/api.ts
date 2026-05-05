@@ -11,6 +11,13 @@ export function setStoredToken(token: string | null) {
 
 function buildUrl(path: string) {
   if (path.startsWith("http")) return path;
+  
+  // In development, if the API_URL is remote (not localhost), we prefer 
+  // using the Vite proxy (relative paths) to avoid CORS issues.
+  if (import.meta.env.DEV && API_BASE && !API_BASE.includes("localhost")) {
+    return path;
+  }
+
   if (API_BASE) return `${API_BASE.replace(/\/$/, "")}${path.startsWith("/") ? path : `/${path}`}`;
   return path;
 }

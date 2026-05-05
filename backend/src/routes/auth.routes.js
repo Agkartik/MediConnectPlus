@@ -33,7 +33,7 @@ router.post("/verify-otp", async (req, res) => {
       return res.status(400).json({ error: "Email and OTP are required" });
     }
     
-    const result = verifyOTP(email, otp);
+    const result = await verifyOTP(email, otp);
     res.json(result);
   } catch (e) {
     console.error(e);

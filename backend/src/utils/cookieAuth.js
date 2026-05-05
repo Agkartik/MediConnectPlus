@@ -12,8 +12,8 @@ const JWT_COOKIE_MAX_AGE = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
 export function setAuthCookie(res, token) {
   res.cookie(JWT_COOKIE_NAME, token, {
     httpOnly: true,           // JavaScript cannot access this cookie
-    secure: process.env.NODE_ENV === 'production', // HTTPS only in production
-    sameSite: 'strict',       // Prevents CSRF attacks
+    secure: process.env.NODE_ENV === 'production', // Only require HTTPS in production
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // 'none' for cross-site prod, 'lax' for local dev
     maxAge: JWT_COOKIE_MAX_AGE,
     path: '/',                // Available on all routes
   });

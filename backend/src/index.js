@@ -1,4 +1,5 @@
 import http from "http";
+import mongoose from "mongoose";
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
@@ -24,7 +25,10 @@ app.use(cookieParser()); // Parse cookies for HTTP-only JWT
 // CSRF Protection
 app.use(csrfProtection); // Verify CSRF on POST/PUT/DELETE requests
 
-app.get("/api/health", (req, res) => res.json({ ok: true }));
+app.get("/api/health", (req, res) => {
+  const dbStatus = mongoose.connection.readyState === 1 ? "connected" : "disconnected";
+  res.json({ ok: true, database: dbStatus });
+});
 
 // CSRF token endpoint
 app.get("/api/csrf-token", getCSRFToken);

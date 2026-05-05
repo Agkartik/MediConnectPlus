@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { useAuth, UserRole } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { authRegister, authLogin } from "@/services/medicalService";
+import { apiFetch } from "@/lib/api";
 
 type PublicRole = "patient" | "doctor";
 const roleLabels: Record<PublicRole, string> = { patient: "Patient", doctor: "Doctor" };
@@ -68,15 +69,10 @@ const LoginPage = () => {
     if (isSignup) {
       // Request real OTP from backend (sends email)
       try {
-        const response = await fetch("/api/auth/request-otp", {
+        await apiFetch("/api/auth/request-otp", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email }),
         });
-        
-        if (!response.ok) {
-          throw new Error("Failed to send OTP");
-        }
         
         setPendingSignup({ 
           role: selectedRole, 
@@ -96,12 +92,12 @@ const LoginPage = () => {
         setShowEmailConfirm(true);
         toast({
           title: "Verification code sent! 📧",
-          description: `Check your email ${email}. If not received, check the backend terminal console.`,
+          description: `Check your email ${email}. If not received, check the backend logs or terminal.`,
         });
       } catch (err) {
         toast({
           title: "Failed to send OTP",
-          description: "Please check your email address and try again.",
+          description: err instanceof Error ? err.message : "Please check your email address and try again.",
           variant: "destructive",
         });
       }
@@ -138,13 +134,10 @@ const LoginPage = () => {
     
     // Verify OTP with backend
     try {
-      const response = await fetch("/api/auth/verify-otp", {
+      const result = await apiFetch<{ success: boolean; message: string }>("/api/auth/verify-otp", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, otp: confirmCode }),
       });
-      
-      const result = await response.json();
       
       if (!result.success) {
         toast({ 
@@ -157,7 +150,7 @@ const LoginPage = () => {
     } catch (err) {
       toast({ 
         title: "Verification failed", 
-        description: "Please try again.", 
+        description: err instanceof Error ? err.message : "Please try again.", 
         variant: "destructive" 
       });
       return;

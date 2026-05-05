@@ -14,6 +14,9 @@ import { AdminSettings } from "../models/AdminSettings.js";
 import { Notification } from "../models/Notification.js";
 import { DoctorReview } from "../models/DoctorReview.js";
 import { authRequired, requireApproved, requireRole } from "../middleware/auth.js";
+import { upload } from "../middleware/upload.js";
+import { uploadToCloudinary } from "../utils/cloudinary.js";
+
 import { userToClient } from "../utils/token.js";
 import { haversineKm } from "../utils/geo.js";
 import { isAppointmentDateToday } from "../utils/appointmentDate.js";
@@ -394,10 +397,17 @@ router.patch("/me/location", authRequired, requireApproved, async (req, res) => 
   }
 });
 
-router.put("/me/profile", authRequired, requireApproved, requireRole("patient", "admin", "doctor"), async (req, res) => {
+router.put("/me/profile", authRequired, requireApproved, requireRole("patient", "admin", "doctor"), upload.single("avatar"), async (req, res) => {
   try {
-    const { name, email, phone, dob, avatar } = req.body;
+    const { name, email, phone, dob } = req.body;
+    let avatar = req.body.avatar;
     const updateData = {};
+    
+    // Handle file upload via Multer + Cloudinary
+    if (req.file) {
+      const result = await uploadToCloudinary(req.file.buffer);
+      avatar = result.secure_url;
+    }
     
     if (name) updateData.name = name;
     if (email) updateData.email = email.toLowerCase();
@@ -926,10 +936,17 @@ router.get("/doctor-profile", authRequired, requireApproved, requireRole("doctor
   }
 });
 
-router.put("/doctor-profile", authRequired, requireApproved, requireRole("doctor"), async (req, res) => {
+router.put("/doctor-profile", authRequired, requireApproved, requireRole("doctor"), upload.single("avatar"), async (req, res) => {
   try {
-    const { name, specialization, license, experience, fee, hospital, practiceAddress, latitude, longitude, schedule, notifications, avatar } =
+    const { name, specialization, license, experience, fee, hospital, practiceAddress, latitude, longitude, schedule, notifications } =
       req.body;
+    let avatar = req.body.avatar;
+
+    // Handle file upload via Multer + Cloudinary
+    if (req.file) {
+      const result = await uploadToCloudinary(req.file.buffer);
+      avatar = result.secure_url;
+    }
     const u = await User.findById(req.user.id);
     if (!u) return res.status(404).json({ error: "Not found" });
     if (name) u.name = name;
